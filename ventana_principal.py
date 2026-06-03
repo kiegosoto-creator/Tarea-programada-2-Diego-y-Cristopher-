@@ -1,9 +1,8 @@
 """
-================================================================================
+
 Archivo: gui/ventana_principal.py
 Proposito:
     Ventana raiz del sistema con los 7 botones del menu principal:
-
         1. Insertar donador
         2. Generar donadores
         3. Actualizar datos del donador
@@ -11,23 +10,19 @@ Proposito:
         5. Insertar lugar de donacion segun provincia
         6. Reportes
         7. Salir
-
     Si NO hay base de datos cargada (matriz vacia), solo se habilitan
     los botones 1, 2, 5 y 7. En cuanto se agregue al menos un donador
     (via Insertar o Generar), se habilitan los 7.
-
 Convencion del proyecto:
     - Variables y atributos en NombreCamello.
     - Sin uso de la palabra clave 'global'.
-================================================================================
+
 """
 
 import tkinter as tk
 from tkinter import ttk, messagebox
-
 from modelo_datos import HayBaseDeDatos
 from persistencia import GuardarBaseDeDatos
-
 
 class VentanaPrincipal:
     """
@@ -35,11 +30,9 @@ class VentanaPrincipal:
     que indica si la base de datos pudo cargarse desde memoria
     secundaria al iniciar la aplicacion.
     """
-
     # Identificadores de cada boton del menu. Se usan como indices para
     # decidir cuales se habilitan cuando la BD esta vacia.
     BotonesPermitidosSinBd = {1, 2, 5, 7}
-
     def __init__(self, Raiz, BaseDeDatosCargada):
         """
         Args:
