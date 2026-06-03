@@ -1,5 +1,4 @@
 """
-================================================================================
 Tarea Programada #2 - Donemos Sangre, demos vida...
 Taller de Programacion - I Semestre 2026
 
@@ -27,7 +26,6 @@ Proposito:
         - JSON solo admite claves string. Los codigos de provincia
           (int) se serializan como strings y se reconvierten a int
           al cargar.
-================================================================================
 """
 
 import json
@@ -36,10 +34,8 @@ import os
 import funciones
 from funciones import IdxFechaNac
 
-
 # Nombre fijo del archivo de base de datos.
 ArchivoBd = "banco_de_sangre.json"
-
 
 def ExisteArchivoBd():
     """
@@ -51,8 +47,7 @@ def ExisteArchivoBd():
     """
     return os.path.isfile(ArchivoBd)
 
-
-def _NormalizarFilaParaGuardar(Fila):
+def NormalizarFilaParaGuardar(Fila):
     """
     Convierte una fila de la matriz de donadores a una version
     serializable en JSON. La fecha de nacimiento (tupla) se convierte
@@ -62,8 +57,7 @@ def _NormalizarFilaParaGuardar(Fila):
     Copia[IdxFechaNac] = list(Copia[IdxFechaNac])
     return Copia
 
-
-def _NormalizarFilaAlCargar(Fila):
+def NormalizarFilaAlCargar(Fila):
     """
     Restaura los tipos exactos exigidos por la consigna tras leer
     una fila desde JSON. En particular, vuelve a convertir la fecha
@@ -71,7 +65,6 @@ def _NormalizarFilaAlCargar(Fila):
     """
     Fila[IdxFechaNac] = tuple(Fila[IdxFechaNac])
     return Fila
-
 
 def GuardarBaseDeDatos():
     """
@@ -83,7 +76,7 @@ def GuardarBaseDeDatos():
     """
     try:
         DonadoresSerializables = [
-            _NormalizarFilaParaGuardar(Fila)
+            NormalizarFilaParaGuardar(Fila)
             for Fila in funciones.Donadores
         ]
         LugaresSerializables = {
@@ -99,7 +92,6 @@ def GuardarBaseDeDatos():
         return True
     except (OSError, TypeError, ValueError):
         return False
-
 
 def CargarBaseDeDatos():
     """
@@ -126,7 +118,7 @@ def CargarBaseDeDatos():
 
     DonadoresCargados = []
     for Fila in Contenido["donadores"]:
-        DonadoresCargados.append(_NormalizarFilaAlCargar(Fila))
+        DonadoresCargados.append(NormalizarFilaAlCargar(Fila))
 
     LugaresCargados = {}
     for CodigoStr, ListaLugares in Contenido["lugares_donacion"].items():
@@ -135,7 +127,7 @@ def CargarBaseDeDatos():
         except ValueError:
             continue
 
-    # Mutacion en sitio (no se usa 'global').
+    # Mutacion en sitio 
     funciones.Donadores.clear()
     funciones.Donadores.extend(DonadoresCargados)
     funciones.LugaresDonacion.clear()

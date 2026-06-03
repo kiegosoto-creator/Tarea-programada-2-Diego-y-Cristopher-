@@ -1,5 +1,4 @@
 """
-================================================================================
 Tarea Programada #2 - Donemos Sangre, demos vida...
 Taller de Programacion - I Semestre 2026
 
@@ -27,17 +26,13 @@ Proposito:
           globales se mutan en sitio con .clear() / .append() /
           .update() para evitar 'global'.
         - Documentacion interna en cada funcion (docstring).
-================================================================================
 """
 
 import re
 import random
 from datetime import date, datetime
 
-
-# ============================================================================
 # SECCION 1: ESTRUCTURAS DE DATOS GLOBALES
-# ============================================================================
 
 # Tupla con los tipos de sangre. En la matriz se almacena el INDICE
 # de cada tipo en esta tupla, no el string.
@@ -121,10 +116,7 @@ def HayBaseDeDatos():
     """True si hay al menos un donador en la matriz."""
     return len(Donadores) > 0
 
-
-# ============================================================================
 # SECCION 2: VALIDACIONES CON EXPRESIONES REGULARES
-# ============================================================================
 
 RegexCedula = re.compile(r"^[1-9]-\d{4}-\d{4}$")
 RegexFecha = re.compile(r"^(\d{2})/(\d{2})/(\d{4})$")
@@ -252,10 +244,7 @@ def CedulaIntAStr(CedulaInt):
     Texto = str(CedulaInt).zfill(9)
     return f"{Texto[0]}-{Texto[1:5]}-{Texto[5:9]}"
 
-
-# ============================================================================
 # SECCION 3: LOGICA DE NEGOCIO
-# ============================================================================
 
 # Compatibilidades sanguineas (pagina 16 del enunciado).
 PuedeDonarA = {
@@ -294,17 +283,14 @@ RecomendacionPorTipo = {
     "AB-": "Se le recomienda donar plaquetas y plasma.",
 }
 
-
 def ObtenerLugaresPorCedula(CedulaInt):
     """Devuelve la lista de lugares para la provincia del primer digito."""
     Codigo = int(str(CedulaInt).zfill(9)[0])
     return list(LugaresDonacion.get(Codigo, []))
 
-
 def NombreProvincia(Codigo):
     """Devuelve el nombre de la provincia segun el codigo."""
     return Provincias.get(Codigo, "Desconocida")
-
 
 def TipoSangreAIndice(TipoStr):
     """Convierte string -> indice 0-7 en TiposDeSangre. -1 si invalido."""
@@ -313,13 +299,11 @@ def TipoSangreAIndice(TipoStr):
     except ValueError:
         return -1
 
-
 def IndiceATipoSangre(Indice):
     """Convierte indice -> string."""
     if 0 <= Indice < len(TiposDeSangre):
         return TiposDeSangre[Indice]
     return ""
-
 
 def MensajeCompatibilidad(TipoStr):
     """Mensaje con los tipos a los que puede donar + recomendacion."""
@@ -330,7 +314,6 @@ def MensajeCompatibilidad(TipoStr):
     return (f"Dado su tipo de sangre {TipoStr}, usted puede donar a: "
             f"{ListaCompatibles}.\n{Recomendacion}")
 
-
 def BuscarDonadorPorCedula(CedulaInt):
     """Devuelve el indice de la fila con esa cedula, o -1."""
     for Indice, Fila in enumerate(Donadores):
@@ -338,17 +321,14 @@ def BuscarDonadorPorCedula(CedulaInt):
             return Indice
     return -1
 
-
 def ExisteCedula(CedulaInt):
     """True si la cedula ya esta registrada."""
     return BuscarDonadorPorCedula(CedulaInt) != -1
-
 
 def JustificacionCompleta(IndiceJustificacion):
     """Texto completo de la justificacion."""
     return Justificaciones.get(IndiceJustificacion,
                                "Justificacion desconocida")
-
 
 # Pools de datos para generacion aleatoria.
 _NombresPila = ["Juan", "Maria", "Carlos", "Ana", "Luis", "Sofia",
@@ -469,10 +449,7 @@ def GenerarDonadoresAleatorios(Cantidad):
 
     return Agregados
 
-
-# ============================================================================
 # SECCION 4: REPORTES HTML5
-# ============================================================================
 
 PlantillaHtml = """<!DOCTYPE html>
 <html lang="es">
@@ -515,27 +492,22 @@ PlantillaHtml = """<!DOCTYPE html>
 </html>
 """
 
-
 def _FechaHoraActual():
     """Fecha/hora del sistema formateada."""
     return datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
-
 
 def _FormatearFecha(Tupla):
     """Tupla (DD, MM, AAAA) -> 'DD/MM/AAAA'."""
     Dia, Mes, Anio = Tupla
     return f"{Dia:02d}/{Mes:02d}/{Anio:04d}"
 
-
 def _NombreCompletoStr(ListaNombre):
     """[nombre, ap1, ap2] -> 'nombre ap1 ap2'."""
     return " ".join(ListaNombre)
 
-
 def _SexoATexto(EsHombre):
     """Bool -> 'Masculino' / 'Femenino'."""
     return "Masculino" if EsHombre else "Femenino"
-
 
 def _ConstruirTablaHtml(Encabezados, Filas):
     """Construye <table> o mensaje 'sin datos'."""
@@ -551,7 +523,6 @@ def _ConstruirTablaHtml(Encabezados, Filas):
             f"<tbody>{''.join(LineasFilas)}</tbody>"
             "</table>")
 
-
 def _ConstruirHtml(Titulo, Encabezados, Filas):
     """Arma el HTML5 final con plantilla."""
     return PlantillaHtml.format(
@@ -559,7 +530,6 @@ def _ConstruirHtml(Titulo, Encabezados, Filas):
         FechaHora=_FechaHoraActual(),
         Contenido=_ConstruirTablaHtml(Encabezados, Filas),
     )
-
 
 def _EscribirArchivo(NombreArchivo, ContenidoHtml):
     """Escribe el archivo HTML."""
@@ -570,12 +540,10 @@ def _EscribirArchivo(NombreArchivo, ContenidoHtml):
     except OSError:
         return False
 
-
 def _FiltrarActivos():
     """Lista de pares (indice, fila) de donadores activos."""
     return [(I, F) for I, F in enumerate(Donadores)
             if F[IdxEstado] == 1]
-
 
 def ReporteDonantesPorProvincia(CodigoProvincia):
     """Reporte 1: donantes activos de la provincia, ordenados por nombre."""
@@ -598,7 +566,6 @@ def ReporteDonantesPorProvincia(CodigoProvincia):
                    "Telefono", "Correo"]
     return _EscribirArchivo("ReporteDonantesPorProvincia.html",
                             _ConstruirHtml(Titulo, Encabezados, Filas))
-
 
 def ReportePorRangoEdad(EdadInicial, EdadFinal=None):
     """Reporte 2: donantes activos en rango [EdadInicial, EdadFinal]."""
@@ -630,7 +597,6 @@ def ReportePorRangoEdad(EdadInicial, EdadFinal=None):
     return _EscribirArchivo("ReportePorRangoEdad.html",
                             _ConstruirHtml(Titulo, Encabezados, Filas))
 
-
 def ReportePorTipoYProvincia(TipoSangreStr, CodigoProvincia):
     """Reporte 3: donantes activos de tipo X en provincia Y."""
     IndiceTipo = TipoSangreAIndice(TipoSangreStr)
@@ -658,7 +624,6 @@ def ReportePorTipoYProvincia(TipoSangreStr, CodigoProvincia):
     return _EscribirArchivo("ReportePorTipoYProvincia.html",
                             _ConstruirHtml(Titulo, Encabezados, Filas))
 
-
 def ReporteListaCompleta():
     """Reporte 4: lista completa de donantes activos por provincia."""
     Anotados = []
@@ -684,7 +649,6 @@ def ReporteListaCompleta():
                    "Correo"]
     return _EscribirArchivo("ReporteListaCompleta.html",
                             _ConstruirHtml(Titulo, Encabezados, Filas))
-
 
 def ReporteMujeresONegativo():
     """Reporte 5: mujeres activas O- con edad < 45, por edad."""
@@ -712,7 +676,6 @@ def ReporteMujeresONegativo():
                    "Telefono", "Correo"]
     return _EscribirArchivo("ReporteMujeresONegativo.html",
                             _ConstruirHtml(Titulo, Encabezados, Filas))
-
 
 def ReporteAQuienPuedeDonar(TipoSangreStr):
     """
@@ -748,7 +711,6 @@ def ReporteAQuienPuedeDonar(TipoSangreStr):
                    "Telefono", "Correo"]
     return _EscribirArchivo("ReporteAQuienPuedeDonar.html",
                             _ConstruirHtml(Titulo, Encabezados, Filas))
-
 
 def ReporteDeQuienPuedeRecibir(TipoSangreStr):
     """
@@ -798,7 +760,6 @@ def ReporteDeQuienPuedeRecibir(TipoSangreStr):
     return _EscribirArchivo("ReporteDeQuienPuedeRecibir.html",
                             _ConstruirHtml(Titulo, Encabezados, Filas))
 
-
 def ReporteDonantesNoActivos():
     """Reporte 8: donantes inactivos con justificacion textual."""
     Inactivos = [F for F in Donadores if F[IdxEstado] == 0]
@@ -821,7 +782,6 @@ def ReporteDonantesNoActivos():
                    "Sexo", "Telefono", "Correo"]
     return _EscribirArchivo("ReporteNoActivos.html",
                             _ConstruirHtml(Titulo, Encabezados, Filas))
-
 
 def ReporteLugaresDonacion():
     """Reporte extra: lugares por provincia con conteo."""

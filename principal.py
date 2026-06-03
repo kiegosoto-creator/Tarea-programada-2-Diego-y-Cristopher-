@@ -1,18 +1,14 @@
 """
-================================================================================
 Tarea Programada #2 - Donemos Sangre, demos vida...
 Taller de Programacion - I Semestre 2026
-
 Integrantes:
     - Cristhoper Jara Salazar
     - Diego Kim
-
 Archivo: principal.py
 Proposito:
     Punto de entrada de la aplicacion + TODA la interfaz grafica.
     Es uno de los 3 archivos del proyecto (junto con funciones.py
     y archivos.py).
-
     Contiene:
         - Constantes de estilos visuales (paleta + tipografias).
         - Helpers para construir banner, botones con hover, footer,
@@ -22,28 +18,21 @@ Proposito:
               VentanaActualizar, VentanaEliminar, VentanaLugarDonacion,
               VentanaReportes.
         - Funcion Main() que arranca la aplicacion.
-
     Cada menu tiene SU BOTON REGRESAR (incluida la ventana resumen
     tras insertar). El boton Salir de la ventana principal cierra la
     aplicacion guardando la base de datos.
-
     Convencion de codigo:
         - Variables, funciones y parametros en NombreCamello.
         - Sin uso de la palabra clave 'global'.
-================================================================================
+
 """
 
 import tkinter as tk
 from tkinter import ttk, messagebox
 from datetime import datetime
-
 import funciones as F
 import archivos as A
-
-
-# ============================================================================
 # SECCION 1: PALETA DE COLORES Y TIPOGRAFIAS
-# ============================================================================
 
 RojoPrincipal = "#B91C1C"
 RojoHover = "#991B1B"
@@ -69,10 +58,7 @@ TamEtiqueta = ("Segoe UI", 11)
 TamFooter = ("Segoe UI", 9)
 TamStatus = ("Segoe UI", 9)
 
-
-# ============================================================================
 # SECCION 2: HELPERS VISUALES
-# ============================================================================
 
 def AplicarTema(Raiz):
     """Tema ttk 'clam' con personalizacion de Combobox."""
@@ -93,7 +79,6 @@ def _AplicarHover(Boton, ColorNormal, ColorHover):
     Boton.bind("<Enter>", lambda _E: Boton.config(bg=ColorHover))
     Boton.bind("<Leave>", lambda _E: Boton.config(bg=ColorNormal))
 
-
 def CrearHeader(Padre, Titulo, Subtitulo=None):
     """Banner rojo con franja decorativa inferior."""
     Contenedor = tk.Frame(Padre, bg=RojoPrincipal)
@@ -109,7 +94,6 @@ def CrearHeader(Padre, Titulo, Subtitulo=None):
     tk.Frame(Contenedor, bg=Blanco, height=2).pack(fill="x")
     return Contenedor
 
-
 def CrearBotonPrimario(Padre, Texto, Comando, Icono="", Ancho=32):
     """Boton rojo con texto blanco."""
     TextoCompleto = f"{Icono}  {Texto}" if Icono else Texto
@@ -120,7 +104,6 @@ def CrearBotonPrimario(Padre, Texto, Comando, Icono="", Ancho=32):
                     cursor="hand2", highlightthickness=0)
     _AplicarHover(Btn, RojoPrincipal, RojoHover)
     return Btn
-
 
 def CrearBotonSecundario(Padre, Texto, Comando, Icono="", Ancho=32):
     """Boton gris para acciones secundarias (Regresar, Cancelar)."""
@@ -133,7 +116,6 @@ def CrearBotonSecundario(Padre, Texto, Comando, Icono="", Ancho=32):
     _AplicarHover(Btn, GrisMedio, GrisHover)
     return Btn
 
-
 def CrearBotonExito(Padre, Texto, Comando, Icono="", Ancho=32):
     """Boton verde para confirmaciones positivas."""
     TextoCompleto = f"{Icono}  {Texto}" if Icono else Texto
@@ -144,7 +126,6 @@ def CrearBotonExito(Padre, Texto, Comando, Icono="", Ancho=32):
                     cursor="hand2", highlightthickness=0)
     _AplicarHover(Btn, VerdeExito, VerdeHover)
     return Btn
-
 
 def CrearBotonMenu(Padre, Numero, Texto, Comando, Icono):
     """Boton de menu con icono, plano, ancho."""
@@ -160,11 +141,9 @@ def CrearBotonMenu(Padre, Numero, Texto, Comando, Icono):
     _AplicarHover(Btn, Blanco, RojoSuave)
     return Btn
 
-
 def CrearSeparador(Padre):
     """Linea horizontal fina."""
     return tk.Frame(Padre, bg=GrisClaro, height=1)
-
 
 def CrearStatusBar(Padre):
     """Barra de estado inferior con label dinamico."""
@@ -175,7 +154,6 @@ def CrearStatusBar(Padre):
                    font=TamStatus, anchor="w", padx=12, pady=4)
     Lbl.pack(fill="x")
     return Barra, Lbl
-
 
 def CrearFooter(Padre, Texto=None):
     """Pie de pagina institucional."""
@@ -238,10 +216,7 @@ def CentrarVentana(Ventana, Ancho, Alto):
     Y = (PantallaAlto - Alto) // 2
     Ventana.geometry(f"{Ancho}x{Alto}+{X}+{Y}")
 
-
-# ============================================================================
-# SECCION 3: VENTANA PRINCIPAL
-# ============================================================================
+# SECCION 3: VENTANA PRINCIPA
 
 class VentanaPrincipal:
     """Ventana raiz con los 7 botones del menu principal."""
@@ -363,10 +338,7 @@ class VentanaPrincipal:
                             "Donar sangre, es donar vida")
         self.Raiz.destroy()
 
-
-# ============================================================================
 # SECCION 4: VENTANA INSERTAR DONADOR
-# ============================================================================
 
 class VentanaInsertar(tk.Toplevel):
     """Formulario de insercion con 5 mensajes de retroalimentacion."""
@@ -585,10 +557,7 @@ class VentanaInsertar(tk.Toplevel):
                              Icono="<", Ancho=14).pack()
         CrearFooter(Resumen)
 
-
-# ============================================================================
 # SECCION 5: VENTANA GENERAR DONADORES
-# ============================================================================
 
 class VentanaGenerar(tk.Toplevel):
     """Genera donadores aleatorios respetando todas las restricciones."""
@@ -669,10 +638,7 @@ class VentanaGenerar(tk.Toplevel):
             parent=self)
         self.VarCantidad.set("")
 
-
-# ============================================================================
 # SECCION 6: VENTANA INSERTAR LUGAR DE DONACION
-# ============================================================================
 
 class VentanaLugarDonacion(tk.Toplevel):
     """Combobox provincia + Text + verificacion de duplicado."""
@@ -750,10 +716,7 @@ class VentanaLugarDonacion(tk.Toplevel):
             f"{F.Provincias[CodigoProvincia]}.", parent=self)
         self.AreaTexto.delete("1.0", "end")
 
-
-# ============================================================================
 # SECCION 7: VENTANA ACTUALIZAR DONADOR
-# ============================================================================
 
 class VentanaActualizar(tk.Toplevel):
     """Busca por cedula y permite modificar (cedula readonly)."""
@@ -953,10 +916,7 @@ class VentanaActualizar(tk.Toplevel):
         messagebox.showinfo("Sin cambios",
                             "Datos No actualizados.", parent=self)
 
-
-# ============================================================================
 # SECCION 8: VENTANA ELIMINAR DONADOR
-# ============================================================================
 
 class VentanaEliminar(tk.Toplevel):
     """Busca por cedula, Combobox de justificaciones de Gemini."""
@@ -1073,10 +1033,7 @@ class VentanaEliminar(tk.Toplevel):
         messagebox.showinfo("Cancelado",
                             "Donador NO eliminado.", parent=self)
 
-
-# ============================================================================
 # SECCION 9: VENTANA DE REPORTES
-# ============================================================================
 
 class VentanaReportes(tk.Toplevel):
     """9 botones de reporte + boton Regresar."""
@@ -1355,11 +1312,7 @@ class VentanaReportes(tk.Toplevel):
         self._AbrirSubVentanaTipoSangre(
             "De quien puede recibir", F.ReporteDeQuienPuedeRecibir)
 
-
-# ============================================================================
 # SECCION 10: PUNTO DE ENTRADA
-# ============================================================================
-
 def Main():
     """
     Funcion principal. Inicializa el modelo, aplica el tema,
@@ -1372,7 +1325,6 @@ def Main():
     VentanaPrincipal(Raiz, BaseDeDatosCargada=BaseDeDatosCargada)
     MostrarSplash(Raiz, Duracion=1500)
     Raiz.mainloop()
-
 
 if __name__ == "__main__":
     Main()
