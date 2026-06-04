@@ -100,7 +100,7 @@ def CargarBaseDeDatos():
 
     Side effects:
         Muta en sitio las estructuras Donadores y LugaresDonacion del
-        modulo funciones (sin reasignar, sin usar 'global').
+        modulo funciones (sin reasignar).
 
     Returns:
         bool: True si se cargo correctamente; False si el archivo no
